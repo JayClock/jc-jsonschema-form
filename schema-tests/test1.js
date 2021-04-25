@@ -2,6 +2,7 @@
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
 const addKeywords = require('ajv-keywords')
+const localize = require('ajv-i18n')
 
 const ajv = new Ajv()
 // 引入ajv校验规则
@@ -54,4 +55,7 @@ const valid = validate({
   name: 'jayclock',
 })
 
-if (!valid) console.log(validate.errors)
+if (!valid) {
+  localize.zh(validate.errors)
+  console.log(validate.errors)
+}
