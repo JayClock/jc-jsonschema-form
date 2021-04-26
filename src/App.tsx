@@ -1,5 +1,6 @@
 import { defineComponent, ref, Ref, reactive, watchEffect } from "vue";
 import { createUseStyles } from "vue-jss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import MonacoEditor from "./components/MonacoEditor";
 
