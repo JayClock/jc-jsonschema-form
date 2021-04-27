@@ -4,11 +4,11 @@
 
 <script lang="ts">
 import { defineComponent, toRef } from "@vue/runtime-core";
-import { FiledPropsDefine } from "../types";
+import { FieldProps } from "../types";
 
 export default defineComponent({
   name: "NumberField",
-  props: FiledPropsDefine,
+  props: FieldProps,
   setup(props) {
     const value = toRef(props, "value");
     const handleChange = (e: any) => {

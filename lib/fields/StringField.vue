@@ -4,10 +4,10 @@
 
 <script lang="ts">
 import { defineComponent, toRef } from "vue";
-import { FiledPropsDefine } from "../types";
+import { FieldProps } from "../types";
 export default defineComponent({
   name: "StringField",
-  props: FiledPropsDefine,
+  props: FieldProps,
   setup(props) {
     // 把props中的单向数据流提出为双向绑定对象
     const value = toRef(props, "value");

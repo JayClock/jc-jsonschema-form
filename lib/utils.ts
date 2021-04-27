@@ -31,7 +31,7 @@ export function validateData(schema: any, data: any) {
   const valid = defaultInstance.validate(schema, data);
   return {
     valid,
-    errors: defaultInstance.errors
+    errors: defaultInstance.errors,
   };
 }
 
@@ -46,9 +46,9 @@ export function resolveSchema(schema: Schema, rootSchema = {}, formData = {}) {
   } else if (hasOwnProperty(schema, "allOf") && Array.isArray(schema.allOf)) {
     return {
       ...schema,
-      allOf: schema.allOf.map(allOfSubschema =>
+      allOf: schema.allOf.map((allOfSubschema) =>
         retrieveSchema(allOfSubschema, rootSchema, formData)
-      )
+      ),
     };
   } else {
     // No $ref or dependencies attribute found, returning the original schema.
@@ -72,7 +72,7 @@ export function retrieveSchema(
       resolvedSchema = mergeAllOf({
         // TODO: Schema type not suitable
         ...resolvedSchema,
-        allOf: resolvedSchema.allOf
+        allOf: resolvedSchema.allOf,
       } as any) as Schema;
     } catch (e) {
       console.warn("could not merge subschemas in allOf:\n" + e);
@@ -104,10 +104,10 @@ export function stubExistingAdditionalProperties(
   // Clone the schema so we don't ruin the consumer's original
   schema = {
     ...schema,
-    properties: { ...schema.properties }
+    properties: { ...schema.properties },
   };
 
-  Object.keys(formData).forEach(key => {
+  Object.keys(formData).forEach((key) => {
     if ((schema as any).properties.hasOwnProperty(key)) {
       // No need to stub, our schema already has the property
       return;
@@ -280,7 +280,7 @@ function withDependentSchema(
     throw new Error(`invalid: it is some ${typeof oneOf} instead of an array`);
   }
   // Resolve $refs inside oneOf.
-  const resolvedOneOf = oneOf.map(subschema =>
+  const resolvedOneOf = oneOf.map((subschema) =>
     hasOwnProperty(subschema, "$ref")
       ? resolveReference(subschema, rootSchema, formData)
       : subschema
@@ -310,8 +310,8 @@ function withExactlyOneSubschema(
       const conditionSchema = {
         type: "object",
         properties: {
-          [dependencyKey]: conditionPropertySchema
-        }
+          [dependencyKey]: conditionPropertySchema,
+        },
       };
       // TODO: validate formdata
       const { errors } = validateData(conditionSchema, formData);
@@ -394,7 +394,7 @@ export function getSchemaType(schema: Schema): string | undefined {
 
   const t: any = type;
   if (t instanceof Array && t.length === 2 && t.includes("null")) {
-    return t.find(type => type !== "null");
+    return t.find((type) => type !== "null");
   }
 
   return type;
@@ -457,7 +457,7 @@ export function isSelect(_schema: any, rootSchema: Schema = {}) {
   if (Array.isArray(schema.enum)) {
     return true;
   } else if (Array.isArray(altSchemas)) {
-    return altSchemas.every(altSchemas => isConstant(altSchemas));
+    return altSchemas.every((altSchemas) => isConstant(altSchemas));
   }
   return false;
 }
@@ -489,9 +489,9 @@ export function getMatchingOption(
       // Create an "anyOf" schema that requires at least one of the keys in the
       // "properties" object
       const requiresAnyOf = {
-        anyOf: Object.keys(option.properties).map(key => ({
-          required: [key]
-        }))
+        anyOf: Object.keys(option.properties).map((key) => ({
+          required: [key],
+        })),
       };
 
       let augmentedSchema;

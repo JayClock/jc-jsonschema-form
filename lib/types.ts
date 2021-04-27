@@ -49,7 +49,7 @@ export interface Schema {
   exclusiveMinimum?: number;
 }
 
-export const FiledPropsDefine = {
+export const FieldProps = {
   schema: {
     type: Object as PropType<Schema>,
     required: true,

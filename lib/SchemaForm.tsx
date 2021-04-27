@@ -1,10 +1,10 @@
 import { defineComponent, PropType } from "@vue/runtime-core";
-import { FiledPropsDefine, Schema } from "./types";
+import { FieldProps } from "./types";
 import SchemaItem from "./SchemaItem";
 
 export default defineComponent({
   name: "SchemaForm",
-  props: FiledPropsDefine,
+  props: FieldProps,
   setup(props) {
     const handleChange = (v: any) => {
       props.onChange(v);
