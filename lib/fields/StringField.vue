@@ -2,22 +2,22 @@
   <input type="text" :value="value" @input="handleChange" />
 </template>
 
-<script lang="ts" setup="props">
-import { ref } from "vue";
-import { FiledPropsDefine, Schema } from "../types";
-
-export default {
+<script lang="ts">
+import { defineComponent, toRef } from "vue";
+import { FiledPropsDefine } from "../types";
+export default defineComponent({
   props: FiledPropsDefine,
-};
-
-declare const props: {
-  value: any;
-  onChange: (v: string) => void;
-  schame: Schema;
-};
-
-export const handleChange = (e: any) => {
-  console.log(e);
-  props.onChange(e.target.value);
-};
+  setup(props) {
+    // 把props中的单向数据流提出为双向绑定对象
+    const value = toRef(props, "value");
+    const handleChange = (e: any) => {
+      console.log(e);
+      props.onChange(e.target.value);
+    };
+    return {
+      handleChange,
+      value,
+    };
+  },
+});
 </script>

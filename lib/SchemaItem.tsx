@@ -1,7 +1,6 @@
-import { PropType } from "@vue/runtime-core";
 import { defineComponent } from "@vue/runtime-core";
 import NumberField from "./fields/NumberField";
-import StringField from "./fields/StringField";
+import StringField from "./fields/StringField.vue";
 import { FiledPropsDefine, Schema, SchemaTypes } from "./types";
 
 export default defineComponent({

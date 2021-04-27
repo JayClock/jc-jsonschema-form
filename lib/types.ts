@@ -6,7 +6,7 @@ export enum SchemaTypes {
   "STRING" = "string",
   "OBJECT" = "object",
   "ARRAY" = "array",
-  "BOOLEAN" = "boolean"
+  "BOOLEAN" = "boolean",
 }
 
 type SchemaRef = { $ref: string };
@@ -52,13 +52,13 @@ export interface Schema {
 export const FiledPropsDefine = {
   schema: {
     type: Object as PropType<Schema>,
-    required: true
+    required: true,
   },
   value: {
-    required: true
+    required: true,
   },
   onChange: {
     type: Function as PropType<(v: any) => void>,
-    required: true
-  }
+    required: true,
+  },
 } as const;
