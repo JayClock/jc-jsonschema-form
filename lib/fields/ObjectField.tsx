@@ -1,25 +1,11 @@
 import { DefineComponent, defineComponent, inject } from '@vue/runtime-core'
 import { FieldProps, Schema } from '../types'
 import { SchemaFormContextKey } from '../context'
-import SchemaItem from '../SchemaItem'
 import { isObject } from '../utils'
-
-const schema: Schema = {
-  type: 'object',
-  properties: {
-    name: {
-      type: 'string',
-    },
-    age: {
-      type: 'number',
-    },
-  },
-}
 
 // 定义SchemaItem类型
 type SchemaItem = DefineComponent<typeof FieldProps>
 
-console.log(typeof FieldProps)
 export default defineComponent({
   name: 'ObjectField',
   props: FieldProps,
@@ -43,13 +29,14 @@ export default defineComponent({
 
     return () => {
       const { schema, rootSchema, value } = props
+      const { SchemaItem } = context
       const properties = schema.properties || {}
-      const currentValue = isObject(value) ? value : {}
+      const currentValue: any = isObject(value) ? value : {}
       return Object.keys(properties).map((key: string, index: number) => (
         <SchemaItem
           schema={properties[key]}
           rootSchema={rootSchema}
-          value={currentValue}
+          value={currentValue[key]}
           key={index}
           onChange={(v: any) => handleChange(key, v)}
         ></SchemaItem>
