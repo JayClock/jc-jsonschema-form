@@ -6,6 +6,7 @@
 import { defineComponent, toRef } from "vue";
 import { FiledPropsDefine } from "../types";
 export default defineComponent({
+  name: "StringField",
   props: FiledPropsDefine,
   setup(props) {
     // 把props中的单向数据流提出为双向绑定对象
