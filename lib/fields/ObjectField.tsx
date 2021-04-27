@@ -1,6 +1,7 @@
-import { defineComponent } from '@vue/runtime-core'
+import { defineComponent, inject } from '@vue/runtime-core'
 import { FieldProps, Schema } from '../types'
 import SchemaItem from '../SchemaItem'
+import { SchemaFormContextKey } from '../context'
 
 const schema: Schema = {
   type: 'object',
@@ -18,6 +19,7 @@ export default defineComponent({
   name: 'ObjectField',
   props: FieldProps,
   setup() {
+    const context = inject(SchemaFormContextKey)
     return () => {
       return <div>Object Field</div>
     }
