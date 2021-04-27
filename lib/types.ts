@@ -1,52 +1,52 @@
-import { PropType } from "vue";
+import { PropType } from 'vue'
 
 export enum SchemaTypes {
-  "NUMBER" = "number",
-  "INTEGER" = "integer",
-  "STRING" = "string",
-  "OBJECT" = "object",
-  "ARRAY" = "array",
-  "BOOLEAN" = "boolean",
+  'NUMBER' = 'number',
+  'INTEGER' = 'integer',
+  'STRING' = 'string',
+  'OBJECT' = 'object',
+  'ARRAY' = 'array',
+  'BOOLEAN' = 'boolean',
 }
 
-type SchemaRef = { $ref: string };
+type SchemaRef = { $ref: string }
 
 // type Schema = any
 export interface Schema {
-  type?: SchemaTypes | string;
-  const?: any;
-  format?: string;
+  type?: SchemaTypes | string
+  const?: any
+  format?: string
 
-  title?: string;
-  default?: any;
+  title?: string
+  default?: any
 
   properties?: {
-    [key: string]: Schema | { $ref: string };
-  };
-  items?: Schema | Schema[] | SchemaRef;
-  uniqueItems?: any;
+    [key: string]: Schema | { $ref: string }
+  }
+  items?: Schema | Schema[] | SchemaRef
+  uniqueItems?: any
   dependencies?: {
-    [key: string]: string[] | Schema | SchemaRef;
-  };
-  oneOf?: Schema[];
-  anyOf?: Schema[];
-  allOf?: Schema[];
+    [key: string]: string[] | Schema | SchemaRef
+  }
+  oneOf?: Schema[]
+  anyOf?: Schema[]
+  allOf?: Schema[]
   // TODO: uiSchema
   // vjsf?: VueJsonSchemaConfig
-  required?: string[];
-  enum?: any[];
-  enumNames?: any[];
-  enumKeyValue?: any[];
-  additionalProperties?: any;
-  additionalItems?: Schema;
+  required?: string[]
+  enum?: any[]
+  enumNames?: any[]
+  enumKeyValue?: any[]
+  additionalProperties?: any
+  additionalItems?: Schema
 
-  minLength?: number;
-  maxLength?: number;
-  minimun?: number;
-  maximum?: number;
-  multipleOf?: number;
-  exclusiveMaximum?: number;
-  exclusiveMinimum?: number;
+  minLength?: number
+  maxLength?: number
+  minimun?: number
+  maximum?: number
+  multipleOf?: number
+  exclusiveMaximum?: number
+  exclusiveMinimum?: number
 }
 
 export const FieldProps = {
@@ -61,4 +61,7 @@ export const FieldProps = {
     type: Function as PropType<(v: any) => void>,
     required: true,
   },
-} as const;
+  rootSchema: {
+    type: Object as PropType<Schema>,
+  },
+} as const
