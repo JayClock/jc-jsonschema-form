@@ -1,4 +1,4 @@
-import { PropType } from 'vue'
+import { DefineComponent, PropType } from 'vue'
 
 export enum SchemaTypes {
   'NUMBER' = 'number',
@@ -65,3 +65,5 @@ export const FieldProps = {
     type: Object as PropType<Schema>,
   },
 } as const
+
+export type CommonFieldType = DefineComponent<typeof FieldProps>
