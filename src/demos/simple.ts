@@ -30,7 +30,22 @@ export default {
       singleTypeArray: {
         type: 'array',
         items: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+            },
+            age: {
+              type: 'number',
+            },
+          },
+        },
+      },
+      multiSelectArray: {
+        type: 'array',
+        items: {
           type: 'string',
+          enum: ['123', '456', '789'],
         },
       },
     },
@@ -55,6 +70,6 @@ export default {
     age: 75,
     bio: 'Roundhouse kicking asses since 1940',
     password: 'noneed',
-    singleTypeArray: ['jocky'],
+    singleTypeArray: [{ name: 'jokcy', age: 12 }],
   },
 }
