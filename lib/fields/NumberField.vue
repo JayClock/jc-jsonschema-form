@@ -10,7 +10,7 @@ export default defineComponent({
   name: 'NumberField',
   props: FieldProps,
   setup(props) {
-    const value = toRef(props, 'value')
+    const value = toRef(props, 'value') as any
     const handleChange = (e: Event) => {
       const currentTarget = e.target as HTMLInputElement
       const { value } = currentTarget
