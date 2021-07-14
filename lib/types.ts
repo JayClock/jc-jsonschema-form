@@ -67,3 +67,41 @@ export const FieldProps = {
 } as const
 
 export type CommonFieldType = DefineComponent<typeof FieldProps>
+
+const CommonWidgetPropsDefine = {
+  value: {},
+  onChange: {
+    type: Function as PropType<(v: any) => void>,
+  },
+} as const
+
+const SelectionWidgetPropsDefine = {
+  ...CommonWidgetPropsDefine,
+  options: {
+    type: Array as PropType<
+      {
+        key: string
+        value: any
+      }[]
+    >,
+    required: true,
+  },
+}
+
+type CommonWidgetDefine = DefineComponent<
+  typeof CommonWidgetPropsDefine,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  {},
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  {}
+>
+
+type SelectionWidgetDefine = DefineComponent<typeof SelectionWidgetPropsDefine>
+
+export interface Theme {
+  widgets: {
+    SelectionWidget: SelectionWidgetDefine
+    TextWidget: CommonWidgetDefine
+    NumberWidget: CommonFieldType
+  }
+}
