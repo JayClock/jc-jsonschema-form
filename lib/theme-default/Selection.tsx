@@ -1,23 +1,9 @@
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { SelectionWidgetPropsDefine, SelectionWidgetDefine } from '../types'
+import { defineComponent, ref, watch } from 'vue'
 
-export default defineComponent({
+const Selection: SelectionWidgetDefine = defineComponent({
   name: 'SelectionWidget',
-  props: {
-    value: {},
-    onChange: {
-      type: Function as PropType<(v: any) => void>,
-      required: true,
-    },
-    options: {
-      type: Array as PropType<
-        {
-          key: string
-          value: any
-        }[]
-      >,
-      required: true,
-    },
-  },
+  props: SelectionWidgetPropsDefine,
   setup(props) {
     const currentValue = ref(props.value)
     // 实现双向绑定
@@ -46,3 +32,5 @@ export default defineComponent({
     }
   },
 })
+
+export default Selection

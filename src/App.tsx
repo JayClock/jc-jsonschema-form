@@ -179,7 +179,7 @@ export default defineComponent({
               </div>
             </div>
             <div class={classes.form}>
-              <ThemeProvider theme={themDefault as any}>
+              <ThemeProvider theme={themDefault}>
                 <SchemaForm
                   schema={demo.schema}
                   onChange={handleChange}

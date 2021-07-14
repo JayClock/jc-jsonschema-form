@@ -68,14 +68,15 @@ export const FieldProps = {
 
 export type CommonFieldType = DefineComponent<typeof FieldProps>
 
-const CommonWidgetPropsDefine = {
+export const CommonWidgetPropsDefine = {
   value: {},
   onChange: {
     type: Function as PropType<(v: any) => void>,
+    required: true,
   },
 } as const
 
-const SelectionWidgetPropsDefine = {
+export const SelectionWidgetPropsDefine = {
   ...CommonWidgetPropsDefine,
   options: {
     type: Array as PropType<
@@ -86,9 +87,9 @@ const SelectionWidgetPropsDefine = {
     >,
     required: true,
   },
-}
+} as const
 
-type CommonWidgetDefine = DefineComponent<
+export type CommonWidgetDefine = DefineComponent<
   typeof CommonWidgetPropsDefine,
   // eslint-disable-next-line @typescript-eslint/ban-types
   {},
@@ -96,12 +97,23 @@ type CommonWidgetDefine = DefineComponent<
   {}
 >
 
-type SelectionWidgetDefine = DefineComponent<typeof SelectionWidgetPropsDefine>
+export type SelectionWidgetDefine = DefineComponent<
+  typeof SelectionWidgetPropsDefine
+>
+
+export enum SelectionWidgetNames {
+  SelectionWidget = 'SelectionWidget',
+}
+
+export enum CommonWidgetNames {
+  TextWidget = 'TextWidget',
+  NumberWidget = 'NumberWidget',
+}
 
 export interface Theme {
   widgets: {
-    SelectionWidget: SelectionWidgetDefine
-    TextWidget: CommonWidgetDefine
-    NumberWidget: CommonFieldType
+    [SelectionWidgetNames.SelectionWidget]: SelectionWidgetDefine
+    [CommonWidgetNames.TextWidget]: CommonWidgetDefine
+    [CommonWidgetNames.NumberWidget]: CommonWidgetDefine
   }
 }
