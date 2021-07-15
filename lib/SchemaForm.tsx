@@ -3,13 +3,21 @@ import { FieldProps, Theme } from './types'
 import SchemaItem from './SchemaItem'
 import { Schema } from './types'
 import { SchemaFormContextKey } from './context'
-import { Ref, watch } from 'vue'
+import { Ref, shallowRef, watch, watchEffect } from 'vue'
+import Ajv, { Options } from 'ajv'
 
 interface ContextRef {
   doValidate: () => {
     errors: any[]
     valid: boolean
   }
+}
+
+/**
+ * 默认 ajv 配置
+ */
+const defaultAjvOptions: Options = {
+  allErrors: true,
 }
 
 export default defineComponent({
@@ -29,6 +37,9 @@ export default defineComponent({
     contextRef: {
       type: Object as PropType<Ref<ContextRef | undefined>>,
     },
+    ajvOptions: {
+      type: Object as PropType<Options>,
+    },
   },
   setup(props) {
     const handleChange = (v: any) => {
@@ -39,15 +50,34 @@ export default defineComponent({
       SchemaItem,
     }
 
+    /**
+     * 校验工具
+     */
+    const validatorRef: Ref<Ajv> = shallowRef() as any
+
+    watchEffect(() => {
+      validatorRef.value = new Ajv({
+        ...defaultAjvOptions,
+        ...props.ajvOptions,
+      })
+    })
+
+    /**
+     * 把子组件中setup 返回给父组件
+     */
     watch(
       () => props.contextRef,
       () => {
         if (props.contextRef) {
           props.contextRef.value = {
             doValidate() {
+              const valid = validatorRef.value.validate(
+                props.schema,
+                props.value,
+              )
               return {
-                valid: true,
-                errors: [],
+                valid,
+                errors: validatorRef.value.errors || [],
               }
             },
           }
