@@ -1,5 +1,5 @@
 import { computed, defineComponent } from '@vue/runtime-core'
-import NumberField from './fields/NumberField.vue'
+import NumberField from './fields/NumberField'
 import StringField from './fields/StringField'
 import ObjectField from './fields/ObjectField'
 import ArrayField from './fields/ArrayField'
