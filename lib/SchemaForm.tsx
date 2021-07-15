@@ -3,6 +3,7 @@ import { FieldProps, Theme } from './types'
 import SchemaItem from './SchemaItem'
 import { Schema } from './types'
 import { SchemaFormContextKey } from './context'
+import { validateFormData } from './validator'
 import { Ref, shallowRef, watch, watchEffect } from 'vue'
 import Ajv, { Options } from 'ajv'
 
@@ -40,6 +41,10 @@ export default defineComponent({
     ajvOptions: {
       type: Object as PropType<Options>,
     },
+    locale: {
+      type: String,
+      default: 'zh',
+    },
   },
   setup(props) {
     const handleChange = (v: any) => {
@@ -49,6 +54,8 @@ export default defineComponent({
     const context = {
       SchemaItem,
     }
+
+    const errorSchemaRef = shallowRef()
 
     /**
      * 校验工具
@@ -71,14 +78,18 @@ export default defineComponent({
         if (props.contextRef) {
           props.contextRef.value = {
             doValidate() {
-              const valid = validatorRef.value.validate(
-                props.schema,
+              // const valid = validatorRef.value.validate(
+              //   props.schema,
+              //   props.value,
+              // )
+              const res = validateFormData(
+                validatorRef.value,
                 props.value,
+                props.schema,
+                props.locale,
               )
-              return {
-                valid,
-                errors: validatorRef.value.errors || [],
-              }
+
+              return res
             },
           }
         }
