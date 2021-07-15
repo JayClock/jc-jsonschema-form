@@ -3,7 +3,7 @@ import { FieldProps, Theme } from './types'
 import SchemaItem from './SchemaItem'
 import { Schema } from './types'
 import { SchemaFormContextKey } from './context'
-import { validateFormData } from './validator'
+import { ErrorSchema, validateFormData } from './validator'
 import { Ref, shallowRef, watch, watchEffect } from 'vue'
 import Ajv, { Options } from 'ajv'
 
@@ -55,7 +55,7 @@ export default defineComponent({
       SchemaItem,
     }
 
-    const errorSchemaRef = shallowRef()
+    const errorSchemaRef: Ref<ErrorSchema> = shallowRef({})
 
     /**
      * 校验工具
@@ -89,6 +89,8 @@ export default defineComponent({
                 props.locale,
               )
 
+              errorSchemaRef.value = res.errorSchema
+
               return res
             },
           }
@@ -107,6 +109,7 @@ export default defineComponent({
           value={value}
           onChange={handleChange}
           rootSchema={schema}
+          errorSchema={errorSchemaRef.value || {}}
         ></SchemaItem>
       )
     }
