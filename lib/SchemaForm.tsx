@@ -3,6 +3,14 @@ import { FieldProps, Theme } from './types'
 import SchemaItem from './SchemaItem'
 import { Schema } from './types'
 import { SchemaFormContextKey } from './context'
+import { Ref, watch } from 'vue'
+
+interface ContextRef {
+  doValidate: () => {
+    errors: any[]
+    valid: boolean
+  }
+}
 
 export default defineComponent({
   name: 'SchemaForm',
@@ -18,6 +26,9 @@ export default defineComponent({
       type: Function as PropType<(v: any) => void>,
       required: true,
     },
+    contextRef: {
+      type: Object as PropType<Ref<ContextRef | undefined>>,
+    },
   },
   setup(props) {
     const handleChange = (v: any) => {
@@ -27,6 +38,23 @@ export default defineComponent({
     const context = {
       SchemaItem,
     }
+
+    watch(
+      () => props.contextRef,
+      () => {
+        if (props.contextRef) {
+          props.contextRef.value = {
+            doValidate() {
+              return {
+                valid: true,
+                errors: [],
+              }
+            },
+          }
+        }
+      },
+      { immediate: true },
+    )
 
     provide(SchemaFormContextKey, context)
 
