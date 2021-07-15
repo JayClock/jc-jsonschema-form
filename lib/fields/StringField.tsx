@@ -24,6 +24,7 @@ export default defineComponent({
           {...rest}
           onChange={handleChange}
           errors={errorSchema.__errors}
+          schema={schema}
         />
       )
 
