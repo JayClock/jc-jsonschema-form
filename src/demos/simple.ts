@@ -42,6 +42,7 @@ export default {
         },
       },
       multiSelectArray: {
+        title: 'multiSelectArray',
         type: 'array',
         items: {
           type: 'string',
