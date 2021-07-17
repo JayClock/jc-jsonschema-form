@@ -4,14 +4,14 @@ import SchemaItem from './SchemaItem'
 import { Schema } from './types'
 import { SchemaFormContextKey } from './context'
 import { ErrorSchema, validateFormData } from './validator'
-import { Ref, shallowRef, watch, watchEffect } from 'vue'
+import { ref, Ref, shallowRef, watch, watchEffect } from 'vue'
 import Ajv, { Options } from 'ajv'
 
 interface ContextRef {
-  doValidate: () => {
+  doValidate: () => Promise<{
     errors: any[]
     valid: boolean
-  }
+  }>
 }
 
 /**
@@ -45,6 +45,9 @@ export default defineComponent({
       type: String,
       default: 'zh',
     },
+    customValidate: {
+      type: Function as PropType<(data: any, errors: any) => void>,
+    },
   },
   setup(props) {
     const handleChange = (v: any) => {
@@ -72,26 +75,39 @@ export default defineComponent({
     /**
      * 把子组件中setup 返回给父组件
      */
+    const validateResolveRef = ref()
+    const validateIndex = ref(0)
+    watch(
+      () => props.value,
+      () => {
+        if (validateResolveRef.value) doValidate()
+      },
+      { deep: true },
+    )
+    async function doValidate() {
+      const index = (validateIndex.value += 1)
+      const res = await validateFormData(
+        validatorRef.value,
+        props.value,
+        props.schema,
+        props.locale,
+        props.customValidate,
+      )
+      if (index !== validateIndex.value) return
+      errorSchemaRef.value = res.errorSchema
+      validateResolveRef.value(res)
+      validateResolveRef.value = undefined
+    }
     watch(
       () => props.contextRef,
       () => {
         if (props.contextRef) {
           props.contextRef.value = {
-            doValidate() {
-              // const valid = validatorRef.value.validate(
-              //   props.schema,
-              //   props.value,
-              // )
-              const res = validateFormData(
-                validatorRef.value,
-                props.value,
-                props.schema,
-                props.locale,
-              )
-
-              errorSchemaRef.value = res.errorSchema
-
-              return res
+            async doValidate() {
+              return new Promise((resolve) => {
+                validateResolveRef.value = resolve
+                doValidate()
+              })
             },
           }
         }

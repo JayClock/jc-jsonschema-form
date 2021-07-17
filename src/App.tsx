@@ -83,6 +83,7 @@ export default defineComponent({
       schemaCode: string
       dataCode: string
       uiSchemaCode: string
+      customValidate?: (data: any, errors: any) => void
     } = reactive({
       schema: null,
       data: {},
@@ -94,13 +95,14 @@ export default defineComponent({
 
     watchEffect(() => {
       const index = selectedRef.value
-      const d = demos[index]
+      const d: any = demos[index]
       demo.schema = d.schema
       demo.data = d.default
       demo.uiSchema = d.uiSchema
       demo.schemaCode = toJson(d.schema)
       demo.dataCode = toJson(d.default)
       demo.uiSchemaCode = toJson(d.uiSchema)
+      demo.customValidate = d.customValidate
     })
 
     const methodRef: Ref<any> = ref()
@@ -131,6 +133,11 @@ export default defineComponent({
 
     const contextRef = ref()
     const nameRef = ref()
+    function validateForm() {
+      contextRef.value.doValidate().then((res: any) => {
+        console.log(res)
+      })
+    }
 
     return () => {
       const classes = classesRef.value
@@ -189,6 +196,7 @@ export default defineComponent({
                   value={demo.data}
                   contextRef={contextRef}
                   ref={nameRef}
+                  customValidate={demo.customValidate}
                 />
               </ThemeProvider>
               {/* <SchemaForm
@@ -198,11 +206,7 @@ export default defineComponent({
                 contextRef={methodRef}
                 value={demo.data}
               /> */}
-              <button
-                onClick={() => console.log(contextRef.value.doValidate())}
-              >
-                校验
-              </button>
+              <button onClick={validateForm}>校验</button>
             </div>
           </div>
         </div>
