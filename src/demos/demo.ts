@@ -14,7 +14,7 @@ export default {
       pass2: {
         type: 'string',
         minLength: 10,
-        title: 'retry password',
+        title: 're try password',
       },
       color: {
         type: 'string',
@@ -39,6 +39,9 @@ export default {
     properties: {
       pass1: {
         widget: PasswordWidget,
+      },
+      pass2: {
+        color: 'red',
       },
     },
   },

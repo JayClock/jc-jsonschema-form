@@ -17,6 +17,12 @@ export default defineComponent({
       return widgetRef.value
     })
 
+    const widgetOptionsRef = computed(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { widget, properties, items, ...rest } = props.uiSchema
+      return rest
+    })
+
     return () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { schema, rootSchema, errorSchema, ...rest } = props
@@ -29,6 +35,7 @@ export default defineComponent({
           onChange={handleChange}
           errors={errorSchema.__errors}
           schema={schema}
+          options={widgetOptionsRef.value}
         />
       )
     }
