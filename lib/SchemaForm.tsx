@@ -1,9 +1,9 @@
 import { defineComponent, provide, PropType } from '@vue/runtime-core'
 import SchemaItem from './SchemaItem'
-import { Schema, UISchema } from './types'
+import { CommonWidgetDefine, CustomFormat, Schema, UISchema } from './types'
 import { SchemaFormContextKey } from './context'
 import { ErrorSchema, validateFormData } from './validator'
-import { ref, Ref, shallowRef, watch, watchEffect } from 'vue'
+import { computed, ref, Ref, shallowRef, watch, watchEffect } from 'vue'
 import Ajv, { Options } from 'ajv'
 
 interface ContextRef {
@@ -47,6 +47,9 @@ export default defineComponent({
     customValidate: {
       type: Function as PropType<(data: any, errors: any) => void>,
     },
+    customFormats: {
+      type: [Array, Object] as PropType<CustomFormat[] | CustomFormat>,
+    },
     uiSchema: {
       type: Object as PropType<UISchema>,
     },
@@ -56,8 +59,23 @@ export default defineComponent({
       props.onChange(v)
     }
 
+    const formatMapRef = computed(() => {
+      if (props.customFormats) {
+        const customFormats = Array.isArray(props.customFormats)
+          ? props.customFormats
+          : [props.customFormats]
+        return customFormats.reduce((result, format) => {
+          // validatorRef.value.addFormat(format.name, format.definition)
+          result[format.name] = format.component
+          return result
+        }, {} as { [key: string]: CommonWidgetDefine })
+      } else {
+        return {}
+      }
+    })
     const context = {
       SchemaItem,
+      formatMapRef,
     }
 
     const errorSchemaRef: Ref<ErrorSchema> = shallowRef({})
@@ -72,6 +90,14 @@ export default defineComponent({
         ...defaultAjvOptions,
         ...props.ajvOptions,
       })
+      if (props.customFormats) {
+        const customFormats = Array.isArray(props.customFormats)
+          ? props.customFormats
+          : [props.customFormats]
+        customFormats.forEach((format) => {
+          validatorRef.value.addFormat(format.name, format.definition)
+        })
+      }
     })
 
     /**

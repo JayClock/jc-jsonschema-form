@@ -5,16 +5,18 @@ import {
   computed,
   ComputedRef,
   defineComponent,
+  ExtractPropTypes,
   inject,
   PropType,
   provide,
   ref,
 } from 'vue'
+import { useVJSFContext } from './context'
 import {
   Theme,
   SelectionWidgetNames,
   CommonWidgetNames,
-  UISchema,
+  FieldProps,
   CommonWidgetDefine,
 } from './types'
 import { isObject } from './utils'
@@ -38,10 +40,20 @@ const ThemeProvider = defineComponent({
 
 export function getWidget<T extends SelectionWidgetNames | CommonWidgetNames>(
   name: T,
-  uiSchema?: UISchema,
+  props?: ExtractPropTypes<typeof FieldProps>,
 ): any {
-  if (uiSchema?.widget && isObject(uiSchema.widget)) {
-    return ref(uiSchema.widget as CommonWidgetDefine)
+  const formContext = useVJSFContext()
+
+  if (props) {
+    const { uiSchema, schema } = props
+    if (uiSchema?.widget && isObject(uiSchema.widget)) {
+      return ref(uiSchema.widget as CommonWidgetDefine)
+    }
+    if (schema.format) {
+      if (formContext.formatMapRef.value[schema.format]) {
+        return ref(formContext.formatMapRef.value[schema.format])
+      }
+    }
   }
   const context: ComputedRef<Theme> | undefined =
     inject<ComputedRef<Theme>>(THEME_PROVIDER_KEY)

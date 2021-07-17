@@ -10,6 +10,8 @@ import SchemaForm, { ThemeProvider } from '../lib'
 
 import themDefault from '../lib/theme-default'
 
+import customFormat from './plugins/customFormat'
+
 // TODO: 在lib中export
 type Schema = any
 type UISchema = any
@@ -198,6 +200,7 @@ export default defineComponent({
                   contextRef={contextRef}
                   ref={nameRef}
                   customValidate={demo.customValidate}
+                  customFormats={customFormat}
                 />
               </ThemeProvider>
               {/* <SchemaForm
