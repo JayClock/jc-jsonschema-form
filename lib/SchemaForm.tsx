@@ -1,7 +1,6 @@
 import { defineComponent, provide, PropType } from '@vue/runtime-core'
-import { FieldProps, Theme } from './types'
 import SchemaItem from './SchemaItem'
-import { Schema } from './types'
+import { Schema, UISchema } from './types'
 import { SchemaFormContextKey } from './context'
 import { ErrorSchema, validateFormData } from './validator'
 import { ref, Ref, shallowRef, watch, watchEffect } from 'vue'
@@ -47,6 +46,9 @@ export default defineComponent({
     },
     customValidate: {
       type: Function as PropType<(data: any, errors: any) => void>,
+    },
+    uiSchema: {
+      type: Object as PropType<UISchema>,
     },
   },
   setup(props) {
@@ -118,7 +120,7 @@ export default defineComponent({
     provide(SchemaFormContextKey, context)
 
     return () => {
-      const { schema, value } = props
+      const { schema, value, uiSchema } = props
       return (
         <SchemaItem
           schema={schema}
@@ -126,6 +128,7 @@ export default defineComponent({
           onChange={handleChange}
           rootSchema={schema}
           errorSchema={errorSchemaRef.value || {}}
+          uiSchema={uiSchema || {}}
         ></SchemaItem>
       )
     }

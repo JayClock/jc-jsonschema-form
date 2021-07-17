@@ -52,7 +52,7 @@ const ArrayItemWrapper = defineComponent({
   setup(props, { slots }) {
     const classesRef = useStyles()
 
-    const context = useVJSFContext()
+    // const context = useVJSFContext()
 
     const handleAdd = () => props.onAdd(props.index)
     const handleDown = () => props.onDown(props.index)
@@ -159,7 +159,7 @@ export default defineComponent({
     const SelectionWidgetRef = getWidget(SelectionWidgetNames.SelectionWidget)
 
     return () => {
-      const { schema, rootSchema, value, errorSchema } = props
+      const { schema, rootSchema, value, errorSchema, uiSchema } = props
       const SelectionWidget = SelectionWidgetRef.value
       const SchemaItem = context.SchemaItem
 
@@ -170,16 +170,23 @@ export default defineComponent({
         // items可能有多种类型，此处约定为数组
         const items: Schema[] = schema.items as []
         const arr = Array.isArray(value) ? value : []
-        return items.map((s: Schema, index: number) => (
-          <SchemaItem
-            schema={s}
-            key={index}
-            rootSchema={rootSchema}
-            errorSchema={errorSchema[index] || {}}
-            value={arr[index]}
-            onChange={(v: any) => handleArrayItemChange(v, index)}
-          />
-        ))
+        return items.map((s: Schema, index: number) => {
+          const itemsUiSchema = uiSchema.items
+          const us = Array.isArray(itemsUiSchema)
+            ? itemsUiSchema[index] || {}
+            : itemsUiSchema || {}
+          return (
+            <SchemaItem
+              schema={s}
+              uiSchema={us}
+              key={index}
+              rootSchema={rootSchema}
+              errorSchema={errorSchema[index] || {}}
+              value={arr[index]}
+              onChange={(v: any) => handleArrayItemChange(v, index)}
+            />
+          )
+        })
       } else if (!isSelect) {
         // 单类型数组
         const arr = Array.isArray(value) ? value : []
@@ -195,6 +202,7 @@ export default defineComponent({
             >
               <SchemaItem
                 schema={schema.items as Schema}
+                uiSchema={(uiSchema.items as any) || {}}
                 value={v}
                 key={index}
                 rootSchema={rootSchema}

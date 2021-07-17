@@ -8,8 +8,16 @@ import {
   inject,
   PropType,
   provide,
+  ref,
 } from 'vue'
-import { Theme, SelectionWidgetNames, CommonWidgetNames } from './types'
+import {
+  Theme,
+  SelectionWidgetNames,
+  CommonWidgetNames,
+  UISchema,
+  CommonWidgetDefine,
+} from './types'
+import { isObject } from './utils'
 
 const THEME_PROVIDER_KEY = Symbol()
 
@@ -30,7 +38,11 @@ const ThemeProvider = defineComponent({
 
 export function getWidget<T extends SelectionWidgetNames | CommonWidgetNames>(
   name: T,
-) {
+  uiSchema?: UISchema,
+): any {
+  if (uiSchema?.widget && isObject(uiSchema.widget)) {
+    return ref(uiSchema.widget as CommonWidgetDefine)
+  }
   const context: ComputedRef<Theme> | undefined =
     inject<ComputedRef<Theme>>(THEME_PROVIDER_KEY)
   if (!context) {
