@@ -143,6 +143,7 @@ export default defineComponent({
       { immediate: true },
     )
 
+    // 把Schemaitem传递给所有子组件
     provide(SchemaFormContextKey, context)
 
     return () => {

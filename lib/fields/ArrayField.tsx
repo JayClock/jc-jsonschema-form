@@ -1,6 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 import { createUseStyles } from 'vue-jss'
-import { FieldProps, Schema, SelectionWidgetNames } from '../types'
+import { FieldPropsDefine, Schema, SelectionWidgetNames } from '../types'
 
 import { useVJSFContext } from '../context'
 
@@ -52,8 +52,6 @@ const ArrayItemWrapper = defineComponent({
   setup(props, { slots }) {
     const classesRef = useStyles()
 
-    // const context = useVJSFContext()
-
     const handleAdd = () => props.onAdd(props.index)
     const handleDown = () => props.onDown(props.index)
     const handleUp = () => props.onUp(props.index)
@@ -88,24 +86,14 @@ const ArrayItemWrapper = defineComponent({
  * {
  *   items: { type: string },
  * }
- *
- * {
- *   items: [
- *    { type: string },
- *    { type: number }
- *   ]
- * }
- *
- * {
- *   items: { type: string, enum: ['1', '2'] },
- * }
  */
 export default defineComponent({
   name: 'ArrayField',
-  props: FieldProps,
+  props: FieldPropsDefine,
   setup(props) {
     const context = useVJSFContext()
 
+    // 修改数组中的数据
     const handleArrayItemChange = (v: any, index: number) => {
       const { value } = props
       const arr = Array.isArray(value) ? value : []
@@ -163,11 +151,19 @@ export default defineComponent({
       const SelectionWidget = SelectionWidgetRef.value
       const SchemaItem = context.SchemaItem
 
+      // 如果 items 为数组，表示是固定长度数组的渲染
       const isMultiType = Array.isArray(schema.items)
+      // 如果 items 中有枚举类型，表示是 select 下拉选择
       const isSelect = schema.items && (schema.items as Schema).enum
 
       if (isMultiType) {
-        // items可能有多种类型，此处约定为数组
+        // 固定长度数组的渲染
+        // {
+        //   items: [
+        //    { type: string },
+        //    { type: number }
+        //   ]
+        // }
         const items: Schema[] = schema.items as []
         const arr = Array.isArray(value) ? value : []
         return items.map((s: Schema, index: number) => {
@@ -188,9 +184,11 @@ export default defineComponent({
           )
         })
       } else if (!isSelect) {
-        // 单类型数组
+        // 单类型数组渲染，非固定长度
+        // {
+        //   items: { type: string }
+        // }
         const arr = Array.isArray(value) ? value : []
-
         return arr.map((v: any, index: number) => {
           return (
             <ArrayItemWrapper
@@ -213,6 +211,10 @@ export default defineComponent({
           )
         })
       } else {
+        // Select下拉选择
+        // {
+        //   items: { type: 'string', enum: ['1', '2'] }
+        // }
         const enumOptions = (schema as any).items.enum
         const options = enumOptions.map((e: any) => ({
           key: e,
@@ -228,8 +230,6 @@ export default defineComponent({
           ></SelectionWidget>
         )
       }
-
-      return <div>hehe</div>
     }
   },
 })

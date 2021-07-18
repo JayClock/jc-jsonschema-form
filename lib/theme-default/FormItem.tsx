@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import { CommonWidgetDefine, CommonWidgetPropsDefine } from '../types'
+import { CommonWidgetPropsDefine } from '../types'
 import { createUseStyles } from 'vue-jss'
 
 const useStyles = createUseStyles({
@@ -48,6 +48,7 @@ export default FormItem
  * @param Widget
  * @returns
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function withFormItem(Widget: any) {
   return defineComponent({
     name: `Wrapped${Widget.name}`,

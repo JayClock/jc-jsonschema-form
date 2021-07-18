@@ -1,11 +1,23 @@
 import { defineComponent } from '@vue/runtime-core'
 import { useVJSFContext } from '../context'
-import { FieldProps } from '../types'
+import { FieldPropsDefine } from '../types'
 import { isObject } from '../utils'
+
+// const schema = {
+//   type: 'object',
+//   properties: {
+//     name: {
+//       type: 'string',
+//     },
+//     age: {
+//       type: 'number',
+//     },
+//   },
+// }
 
 export default defineComponent({
   name: 'ObjectField',
-  props: FieldProps,
+  props: FieldPropsDefine,
   setup(props) {
     const handleChange = (key: string, v: string) => {
       const value: any = isObject(props.value) ? props.value : {}

@@ -21,7 +21,7 @@ export default defineComponent({
   setup(props) {
     const currentValue = ref(props.value)
     // 实现双向绑定
-    watch(currentValue, (newVal, oldval) => {
+    watch(currentValue, (newVal) => {
       if (newVal !== props.value) {
         props.onChange(newVal)
       }

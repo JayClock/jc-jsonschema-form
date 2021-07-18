@@ -16,7 +16,7 @@ import {
   Theme,
   SelectionWidgetNames,
   CommonWidgetNames,
-  FieldProps,
+  FieldPropsDefine,
   CommonWidgetDefine,
 } from './types'
 import { isObject } from './utils'
@@ -40,7 +40,7 @@ const ThemeProvider = defineComponent({
 
 export function getWidget<T extends SelectionWidgetNames | CommonWidgetNames>(
   name: T,
-  props?: ExtractPropTypes<typeof FieldProps>,
+  props?: ExtractPropTypes<typeof FieldPropsDefine>,
 ): any {
   const formContext = useVJSFContext()
 

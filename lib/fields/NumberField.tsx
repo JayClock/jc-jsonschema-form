@@ -1,11 +1,11 @@
-import { FieldProps, CommonWidgetNames } from '../types'
+import { FieldPropsDefine, CommonWidgetNames } from '../types'
 import { defineComponent } from 'vue'
 
 import { getWidget } from '../theme'
 
 export default defineComponent({
   name: 'NumberFeild',
-  props: FieldProps,
+  props: FieldPropsDefine,
   setup(props) {
     const handleChange = (v: string) => {
       // const value = e.target.value
@@ -23,6 +23,7 @@ export default defineComponent({
 
     return () => {
       const NumberWidget = NumberWidgetRef.value
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { schema, rootSchema, errorSchema, ...rest } = props
       // return <input value={value as any} type="number" onInput={handleChange} />
       return (

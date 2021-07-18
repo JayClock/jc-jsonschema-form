@@ -3,15 +3,14 @@ import { Ref } from 'vue'
 import { CommonFieldType, CommonWidgetDefine } from './types'
 export const SchemaFormContextKey = Symbol()
 
-// 获取祖先组件传递的参数
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function useVJSFContext() {
-  const context:
-    | {
-        SchemaItem: CommonFieldType
-        formatMapRef: Ref<{ [key: string]: CommonWidgetDefine }>
-      }
-    | undefined = inject(SchemaFormContextKey)
+interface ContextDefine {
+  SchemaItem: CommonFieldType
+  formatMapRef: Ref<{ [key: string]: CommonWidgetDefine }>
+}
+
+// 获取从SchemaForm组件传递的参数,用于解决循环引用的问题
+export function useVJSFContext(): ContextDefine {
+  const context: ContextDefine | undefined = inject(SchemaFormContextKey)
   // 判断祖先组件是否有内容
   if (!context) {
     throw Error('SchemaForm shoule be used')

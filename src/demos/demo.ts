@@ -1,4 +1,4 @@
-import PasswordWidget from '@/components/PasswordWiget'
+import PasswordWidget from '../components/PasswordWiget'
 
 export default {
   name: 'Demo',
@@ -7,14 +7,14 @@ export default {
     properties: {
       pass1: {
         type: 'string',
-        minLength: 10,
+        // minLength: 10,
         test: true,
         title: 'password',
       },
       pass2: {
         type: 'string',
         minLength: 10,
-        title: 're try password',
+        title: 'retry password',
       },
       color: {
         type: 'string',
@@ -30,7 +30,6 @@ export default {
         if (data.pass1 !== data.pass2) {
           errors.pass2.addError('密码必须相同')
         }
-        console.log(errors)
         resolve()
       }, 2000)
     })

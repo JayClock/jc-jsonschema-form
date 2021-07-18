@@ -3,12 +3,12 @@ import NumberField from './fields/NumberField'
 import StringField from './fields/StringField'
 import ObjectField from './fields/ObjectField'
 import ArrayField from './fields/ArrayField'
-import { FieldProps, SchemaTypes } from './types'
+import { FieldPropsDefine, SchemaTypes } from './types'
 import { retrieveSchema } from './utils'
 
 export default defineComponent({
   name: 'SchemaItem',
-  props: FieldProps,
+  props: FieldPropsDefine,
   setup(props) {
     const retrivedSchemaRef = computed(() => {
       const { schema, rootSchema, value } = props
@@ -33,9 +33,8 @@ export default defineComponent({
         case SchemaTypes.ARRAY:
           Component = ArrayField
           break
-        default: {
+        default:
           console.log(`${type} is not supported`)
-        }
       }
       return <Component {...props} schema={retrievedSchema}></Component>
     }

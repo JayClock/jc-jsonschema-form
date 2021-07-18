@@ -51,7 +51,7 @@ export interface Schema {
   exclusiveMinimum?: number
 }
 
-export const FieldProps = {
+export const FieldPropsDefine = {
   schema: {
     type: Object as PropType<Schema>,
     required: true,
@@ -76,7 +76,7 @@ export const FieldProps = {
   },
 } as const
 
-export type CommonFieldType = DefineComponent<typeof FieldProps>
+export type CommonFieldType = DefineComponent<typeof FieldPropsDefine>
 
 export const CommonWidgetPropsDefine = {
   value: {},

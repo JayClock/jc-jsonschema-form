@@ -1,11 +1,11 @@
 import { computed, defineComponent } from 'vue'
 
-import { FieldProps, CommonWidgetNames } from '../types'
+import { FieldPropsDefine, CommonWidgetNames } from '../types'
 import { getWidget } from '../theme'
 
 export default defineComponent({
   name: 'StringFeild',
-  props: FieldProps,
+  props: FieldPropsDefine,
   setup(props) {
     const handleChange = (v: string) => {
       // console.log(e)
